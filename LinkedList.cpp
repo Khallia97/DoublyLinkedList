@@ -5,33 +5,33 @@ using namespace std;
 
 class node{
 private:
-    string name;
-    node* next;
-    node* prev;
+    string name;                    // stores student's name
+    node* next;                    // pointer to next node
+    node* prev;                    // pointer to previous node
 
-public:
+public:                            // constructor initializes node with name
     node(string n){
         name = n;
         next = nullptr;
         prev = nullptr;
     }
-
-    string getName(){
+                                // getter for name
+    string getName(){            
         return name;
     }
-
+                                // getter for next pointer
     node* getNext(){
         return next;
     }
-
+                                // getter for prev pointer
     node* getPrev(){
         return prev;
     }
-
+                                // setter for next pointer
     void setNext(node* n){
         next = n;
     }
-
+                                // setter for prev pointer
     void setPrev(node* p){
         prev = p;
     }
@@ -42,13 +42,13 @@ private:
     node* head;
     node* tail;
 
-public:
+public:                    // constructor initializes empty list
     doublyLinkedList(){
         head = nullptr;
         tail = nullptr;
     }
 
-    void insertNode(string data){
+    void insertNode(string data){        // inserts a node in sorted order
         node* newNode = new node(data);
 
         if(!head){
@@ -79,31 +79,31 @@ public:
     }
 
     void deleteNode(string data){
-        if(!head) return;
+        if(!head) return;        // empty list, nothing to delete
 
         node* current = head;
 
-        while(current && current->getName() != data){
+        while(current && current->getName() != data){        // search for the node
             current = current->getNext();
         }
 
         if(!current) return;
 
-        if(current == head && current == tail){
+        if(current == head && current == tail){        // case 1: only one node in list
             delete current;
             head = tail = nullptr;
         }
-        else if(current == head){
+        else if(current == head){                   // case 2: deleting head
             head = head->getNext();
             head->setPrev(nullptr);
             delete current;
         }
-        else if(current == tail){
+        else if(current == tail){                // case 3: deleting tail
             tail = tail->getPrev();
             tail->setNext(nullptr);
             delete current;
         }
-        else{
+        else{                                      // case 4: deleting from middle
             node* before = current->getPrev();
             node* after = current->getNext();
             before->setNext(after);
@@ -112,7 +112,7 @@ public:
         }
     }
 
-    void traverseAscending(ofstream& outFile){
+    void traverseAscending(ofstream& outFile){            //traversal head to tail
         node* current = head;
         while(current){
             outFile << current->getName() << endl;
@@ -120,7 +120,7 @@ public:
         }
     }
 
-    void traverseDescending(ofstream& outFile){
+    void traverseDescending(ofstream& outFile){        //traversal tail to head
         node* current = tail;
         while(current){
             outFile << current->getName() << endl;
@@ -128,7 +128,7 @@ public:
         }
     }
 
-    void cleanUp(){
+    void cleanUp(){                    // free allocated memory
         node* current = head;
         while(current){
             node* temp = current;
@@ -138,7 +138,7 @@ public:
     }
 };
 
-string toLowerCase(string str){
+string toLowerCase(string str){                      // helper function to convert names to lowercase
     for(int i = 0; i < str.length(); i++){
         str[i] = tolower(str[i]);
     }
@@ -146,13 +146,13 @@ string toLowerCase(string str){
 }
 
 int main(){
-    ifstream inFile("input.txt");
-    ofstream outFile("output.txt");
+    ifstream inFile("input.txt");        // input file
+    ofstream outFile("output.txt");       // output file
 
     doublyLinkedList list;
     string word;
 
-    while(inFile >> word){
+    while(inFile >> word){                 // read file word by word
         if(word == "delete"){
             string name;
             inFile >> name;
@@ -165,11 +165,11 @@ int main(){
         }
     }
 
-    list.traverseAscending(outFile);
+    list.traverseAscending(outFile);    // write ascending order
     outFile << "=============" << endl;
-    list.traverseDescending(outFile);
+    list.traverseDescending(outFile);     // write descending order
 
-    list.cleanUp();
+    list.cleanUp();                    // clean up memory before exiting
 
     inFile.close();
     outFile.close();
