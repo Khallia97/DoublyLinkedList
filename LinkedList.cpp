@@ -52,25 +52,25 @@ public:                    // constructor initializes empty list
         node* newNode = new node(data);
 
         if(!head){
-            head = tail = newNode;
+            head = tail = newNode;                // case 1: empty list
         }
-        else if(data < head->getName()){
+        else if(data < head->getName()){          // case 2: insert before head
             newNode->setNext(head);
             head->setPrev(newNode);
             head = newNode;
         }
-        else if(data > tail->getName()){
+        else if(data > tail->getName()){            // case 3: insert after tail
             tail->setNext(newNode);
             newNode->setPrev(tail);
             tail = newNode;
         }
-        else{
-            node* current = head;
+        else{                                        // case 4: insert somewhere in the middle
+            node* current = head;                    
             while(current && current->getName() < data){
                 current = current->getNext();
             }
 
-            node* previous = current->getPrev();
+            node* previous = current->getPrev();            // find position
             previous->setNext(newNode);
             newNode->setPrev(previous);
             newNode->setNext(current);
